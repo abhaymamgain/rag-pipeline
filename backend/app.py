@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+import cfg
 
 app = Flask(__name__)
 CORS(app)
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = cfg.PATH
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 

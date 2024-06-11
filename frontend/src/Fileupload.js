@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./FilesUpload.css";
 
 const FileUpload = () => {
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
 
   const handleChange = (event) => {
-    setFiles(event.target.files);
+    setFiles(Array.from(event.target.files));
   };
 
   const handleSubmit = async () => {
@@ -35,11 +36,25 @@ const FileUpload = () => {
   }
 
   return (
-    <div>
+    <div className="file-upload-container">
       <h2>Multiple File Upload</h2>
       <input type="file" multiple onChange={handleChange} />
-      <button onClick={handleSubmit}>Upload</button>
-      <button onClick={handleClear}>Clear</button>
+      <div className="buttons">
+        <button onClick={handleSubmit}>Upload</button>
+        <button onClick={handleClear}>Clear</button>
+      </div>
+
+      <div className="file-list">
+        <h3>Selected Files:</h3>
+
+        {files && (
+          <ul>
+            {files.map((file, index) => (
+              <li key={index}>{file.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

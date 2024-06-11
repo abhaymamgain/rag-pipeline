@@ -16,7 +16,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start1": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+    "start-frontend": "cd frontend && npm start",
+    "start-backend": "cd backend && python app.py"
   },
   "eslintConfig": {
     "extends": [
@@ -35,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
