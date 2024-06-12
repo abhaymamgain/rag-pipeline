@@ -1,1 +1,2 @@
 PATH='uploads'
+db='db'

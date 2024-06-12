@@ -61,3 +61,15 @@
   padding: 10px;
   border-radius: 5px;
 }
+
+.chat-output {
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+.buttons {
+  margin-top: 10px;
+}
