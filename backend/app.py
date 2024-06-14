@@ -28,7 +28,7 @@ def upload_file():
             file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename)
             if not os.path.isfile(file_path):
               file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            populate_db.fill_db()
+    populate_db.fill_db()
             
     return jsonify({'success': True, 'message': 'Files uploaded successfully'})
 
@@ -53,7 +53,7 @@ def cleardb():
 def delete_files_in_folder(folder_path):
     # List all files in the folder
     files = os.listdir(folder_path)
-
+    populate_db.clear_database()
     # Iterate over each file and delete it
     for file_name in files:
         file_path = os.path.join(folder_path, file_name)
