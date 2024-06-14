@@ -27,7 +27,10 @@ def add_to_chroma(chunks: list[Document]):
     
     new_chunks_ids=[chunk.metadata['id'] for chunk in new_chunks]
     db.add_documents(new_chunks,ids=new_chunks_ids)
-    db.persist()
+    
+
+    
+        
     
 def calculate_chunk_id(chunks: list[Document]):
     last_page_id=None
@@ -51,5 +54,5 @@ def calculate_chunk_id(chunks: list[Document]):
     return chunks
     
 def clear_database():
-    if os.path.exists(cfg.db):
-        shutil.rmtree(cfg.db)
+    db=Chroma(persist_directory=cfg.db,embedding_function=embedding())
+    db.delete_collection()

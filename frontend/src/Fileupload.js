@@ -19,7 +19,6 @@ const FileUpload = () => {
 
       const data = await response.json();
       setOutputs([...outputs, data.generated_text]);
-      // Clear the input text after submission if needed
       setInputText("");
     } catch (error) {
       console.error("Error generating text:", error);
