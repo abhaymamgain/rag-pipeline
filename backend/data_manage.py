@@ -2,6 +2,7 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 import cfg
+from unstructured.partition.pdf import partition_pdf
 
 
 
@@ -24,5 +25,7 @@ def data_up():
     print(chunks[0])
     return chunks
  
+
+     
 
    

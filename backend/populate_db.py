@@ -2,9 +2,8 @@ from embedding import embedding
 from langchain.vectorstores.chroma import Chroma
 from langchain.schema.document import Document
 import cfg
-import os
-import shutil
-import data_manage
+
+import data_manage as data_manage
 
 def fill_db():
     chunks=data_manage.data_up()

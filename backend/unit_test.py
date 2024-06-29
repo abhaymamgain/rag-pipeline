@@ -1,4 +1,4 @@
-import query
+import query as query
 from langchain_community.llms.ollama import Ollama
 
 def print_green(text):

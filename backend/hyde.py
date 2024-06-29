@@ -6,13 +6,14 @@ import cfg
 from langchain_community.document_transformers import LongContextReorder
 from huggingface_hub import login
 from langchain_community.llms.ollama import Ollama
+import llm_calls as lc
 
 
 def Hypo_doc_generator(query_text):
     embedding_func=embedding()
     db_chroma=Chroma(
         embedding_function=embedding_func,
-        persist_directory=cfg.db
+        collection_name='multi-modal-rag'
     )
     
     PROMT_TEMPLATE="""Answer the question based only on following context
@@ -23,7 +24,7 @@ def Hypo_doc_generator(query_text):
     
     
     """
-    results=db_chroma.similarity_search_with_score(query_text,k=5)
+    results=db_chroma.similarity_search_with_score(query_text)
     # results=LongContextReorder().transform_documents(results)
     
     context_text="\n\n---\n\n".join([doc.page_content for doc,_score in results])
@@ -35,9 +36,9 @@ def Hypo_doc_generator(query_text):
     #model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B")
     #text_generator = transformers.pipeline("text-generation", model=model_name, model_kwargs={"torch_dtype": torch.bfloat16}, device_map="auto",pad_token_id=tokenizer.eos_token_id)
     
-    model=Ollama(
-                 model='llama3')
-    response_text=model.invoke(prompt,max_length=200)
+    # model=Ollama(model='llava')
+    # response_text=model.invoke(prompt)
+    response_text=lc.llm_generate(prompt)
     
     print('REACHED')
     print(response_text)

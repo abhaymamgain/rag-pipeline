@@ -7,6 +7,7 @@ from huggingface_hub import login
 from langchain_community.llms.ollama import Ollama
 from hyde import Hypo_doc_generator
 from langchain.schema.document import Document
+import llm_calls as lc
 
 
 def query_rag(query_text:str):
@@ -45,9 +46,10 @@ def query_rag(query_text:str):
     #model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B")
     #text_generator = transformers.pipeline("text-generation", model=model_name, model_kwargs={"torch_dtype": torch.bfloat16}, device_map="auto",pad_token_id=tokenizer.eos_token_id)
     
-    model=Ollama(
-                 model='llama3')
-    response_text=model.invoke(prompt,max_length=300)
+    
+    response_text=lc.llm_generate(prompt)
+    # model=Ollama(model='llava')
+    # response_text=model.invoke(prompt)
     
     print('REACHED')
     print(response_text)

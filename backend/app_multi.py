@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import cfg
-import query as query
+
 import populate_db as populate_db
+import partition
+import query_partition as gen
 
 
 
@@ -29,8 +31,8 @@ def upload_file():
             file_path=os.path.join(app.config['UPLOAD_FOLDER'], filename)
             if not os.path.isfile(file_path):
               file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-    populate_db.fill_db()      
+    partition.process_store()    
+            
     return jsonify({'success': True, 'message': 'Files uploaded successfully'})
 
 
@@ -40,7 +42,7 @@ def gen_res():
         
         data = request.get_json()
         input_text=data.get('input_text')
-        generated=query.query_rag(input_text)
+        generated=gen.run(input_text)
         return jsonify({"generated_text": generated})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
