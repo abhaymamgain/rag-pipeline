@@ -17,9 +17,10 @@ from groq import Groq
 # )
 
 # print(chat_completion.choices[0].message.content)
-
+from dotenv import load_dotenv
+load_dotenv()
 def llm_generate(prompt,client=Groq(
-    api_key="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",
+    api_key=os.getenv('groq_key'),
 )):
     chat_completion = client.chat.completions.create(
     messages=[

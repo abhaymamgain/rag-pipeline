@@ -1,7 +1,7 @@
 import os
 from unstructured.partition.pdf import partition_pdf
 import cfg
-
+import llm_calls as lc
 from langchain_community.llms.ollama import Ollama
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
@@ -9,6 +9,7 @@ from langchain.storage import InMemoryStore
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.vectorstores.chroma import Chroma
 from langchain.schema.document import Document
+from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
 import uuid
 import embedding as embedding
 from image_processing import image_capt_summary_list
@@ -58,8 +59,8 @@ def tables_summarize(tables):
                     Give a concise summary of the table. Table chunk: {element} """
 
     prompt = ChatPromptTemplate.from_template(prompt_text)
-    model=Ollama(model='llava')
-    summarize_chain = {"element": lambda x: x} | prompt | model | StrOutputParser()
+    # model=Ollama(model='llava')
+    summarize_chain = {"element": lambda x: x} | prompt | RunnableLambda(lc.llm_generate) | StrOutputParser()
     table_summaries = summarize_chain.batch(tables, {"max_concurrency": 5})
     
 
@@ -82,7 +83,7 @@ def process_store():
     print("=="*20)
     print(table_summaries)
 
-    vectorstore=Chroma(collection_name='multi-modal-rag',embedding_function=embedding.embedding())
+    vectorstore=Chroma(collection_name='multi-modal-rag',embedding_function=embedding.embedding(),persist_directory=cfg.db)
     store = InMemoryStore()
     id_key = "doc_id"
     retriever = MultiVectorRetriever(
@@ -120,6 +121,7 @@ def process_store():
     ]
             retriever.vectorstore.add_documents(summary_img)
             retriever.docstore.mset(list(zip(img_ids, summary_img)))
+    
     calculate_retriver.set_calculated_variable(retriever)
     
 

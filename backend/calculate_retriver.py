@@ -1,4 +1,5 @@
-calculated_variable = None
+from langchain.retrievers.multi_vector import MultiVectorRetriever
+calculated_variable:MultiVectorRetriever = None
 
 def set_calculated_variable(value):
     global calculated_variable

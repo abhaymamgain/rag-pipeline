@@ -18,8 +18,10 @@ def prompt_func(dict):
     format_texts = "\n".join(dict["context"])
     
     content=[
-                {"type": "text", "text": f"""Answer the question based only on the following context, 
-                 which can include text, tables,images
+                {"type": "text", "text": f"""
+                 you do your job with maximum accuracy you will
+                 Answer the question based on only the following context, 
+                 which can include text and tables keep your answer concise and objective , if answering from table data match carefully the column names before answering
                 Question: {dict["question"]}
 
                 Text and tables: {format_texts}
@@ -45,10 +47,7 @@ def prompt_func(dict):
 def run(prompt):
     
     retriever =calculate_retriver.get_calculated_variable()
-    
-    
-    
-    
+     
     # docs =retriever.get_relevant_documents('what is the trend in the Dow jones chart')
     # print(len(docs))
     # doctype=split_image_text_types(docs)
@@ -60,7 +59,6 @@ def run(prompt):
 # RAG pipeline
     chain = (
         {"context": retriever , "question": RunnablePassthrough()}
-        |{"context":RunnableLambda(LongContextReorder.transform_documents),"question": RunnablePassthrough()}
         | RunnableLambda(prompt_func)
         | RunnableLambda(lc.llm_generate)
         | StrOutputParser()

@@ -42,8 +42,11 @@ def gen_res():
         
         data = request.get_json()
         input_text=data.get('input_text')
-        generated=gen.run(input_text)
-        return jsonify({"generated_text": generated})
+        print("input_text", input_text)
+        if(input_text!=None):
+            generated=gen.run(input_text)
+            return jsonify({"generated_text": generated})
+        else: return jsonify({"generated_text": "nothing is entered"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
