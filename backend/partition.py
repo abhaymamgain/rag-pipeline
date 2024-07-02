@@ -24,8 +24,8 @@ def doc_partition(path,file_name):
     extract_images_in_pdf=True,
     infer_table_structure=True,
     chunking_strategy="by_title",
-    max_characters=4000,
-    new_after_n_chars=3800,
+    max_characters=400,
+    new_after_n_chars=500,
     combine_text_under_n_chars=10,
     image_output_dir_path='content')
 
@@ -55,7 +55,7 @@ def data_category(raw_pdf_elements):
     return data_category
   
 def tables_summarize(tables):
-    prompt_text = """You are an assistant tasked with summarizing tables. \
+    prompt_text = """You are an assistant tasked with summarizing tables.\
                     Give a concise summary of the table. Table chunk: {element} """
 
     prompt = ChatPromptTemplate.from_template(prompt_text)

@@ -8,20 +8,22 @@ from langchain.storage import InMemoryStore
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.vectorstores.chroma import Chroma
 from langchain_community.document_transformers import LongContextReorder
-
+from hyde import Hypo_doc_generator
 import embedding as embedding
 import llm_calls as lc
 import cfg
 import calculate_retriver
+from langchain.schema.document import Document
 
 def prompt_func(dict):
     format_texts = "\n".join(dict["context"])
+    print("dict[\"context\"]", dict["context"])
     
     content=[
                 {"type": "text", "text": f"""
                  you do your job with maximum accuracy you will
-                 Answer the question based on only the following context, 
-                 which can include text and tables keep your answer concise and objective , if answering from table data match carefully the column names before answering
+                 Answer the question based on only the following context which might contain texts or tables, 
+                 
                 Question: {dict["question"]}
 
                 Text and tables: {format_texts}
@@ -43,11 +45,16 @@ def prompt_func(dict):
         )
     ]
 
+    
 
 def run(prompt):
     
-    retriever =calculate_retriver.get_calculated_variable()
-     
+    hypo_doc,gen_query=Hypo_doc_generator(prompt)
+    print("hypo_doc,gen_query", hypo_doc,gen_query)
+    hypo_doc_list: list[Document] = [hypo_doc]
+    print("hypo_doc_list", hypo_doc_list)
+    retriver = calculate_retriver.get_calculated_variable()
+    retriver.vectorstore.add_documents(hypo_doc_list) 
     # docs =retriever.get_relevant_documents('what is the trend in the Dow jones chart')
     # print(len(docs))
     # doctype=split_image_text_types(docs)
@@ -58,7 +65,7 @@ def run(prompt):
         
 # RAG pipeline
     chain = (
-        {"context": retriever , "question": RunnablePassthrough()}
+        {"context": retriver , "question": RunnablePassthrough()}
         | RunnableLambda(prompt_func)
         | RunnableLambda(lc.llm_generate)
         | StrOutputParser()
