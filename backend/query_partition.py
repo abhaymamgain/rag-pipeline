@@ -14,6 +14,7 @@ import llm_calls as lc
 import cfg
 import calculate_retriver
 from langchain.schema.document import Document
+import populate_db
 
 def prompt_func(dict):
     format_texts = "\n".join(dict["context"])
@@ -54,13 +55,7 @@ def run(prompt):
     hypo_doc_list: list[Document] = [hypo_doc]
     print("hypo_doc_list", hypo_doc_list)
     retriver = calculate_retriver.get_calculated_variable()
-    retriver.vectorstore.add_documents(hypo_doc_list) 
-    # docs =retriever.get_relevant_documents('what is the trend in the Dow jones chart')
-    # print(len(docs))
-    # doctype=split_image_text_types(docs)
-    # print(doctype['images'][:])
-    # print('=='*30)
-    # print(doctype['texts'][0])
+   
     
         
 # RAG pipeline
@@ -74,3 +69,4 @@ def run(prompt):
     response=chain.invoke(prompt)
     print(response)
     return response
+

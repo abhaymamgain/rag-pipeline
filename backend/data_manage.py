@@ -21,9 +21,9 @@ def split_documents(documents: list[Document]):
     return text_splitter.split_documents(documents)
 def data_up():
     documents=load_documents()
-    chunks=split_documents(documents)
-    print(chunks[0])
-    return chunks
+    # chunks=split_documents(documents)
+    # print(chunks[0])
+    return documents
  
 
      

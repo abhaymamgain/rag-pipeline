@@ -11,6 +11,7 @@ from langchain.vectorstores.chroma import Chroma
 from langchain.schema.document import Document
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
 import uuid
+
 import embedding as embedding
 from image_processing import image_capt_summary_list
 import calculate_retriver
@@ -25,8 +26,8 @@ def doc_partition(path,file_name):
     infer_table_structure=True,
     chunking_strategy="by_title",
     max_characters=400,
-    new_after_n_chars=500,
-    combine_text_under_n_chars=10,
+    new_after_n_chars=200,
+    combine_text_under_n_chars=200,
     image_output_dir_path='content')
 
   return raw_pdf_elements
